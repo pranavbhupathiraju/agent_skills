@@ -1,23 +1,24 @@
 ---
 name: test-automation
 description: >-
-  Automated testing, test suite authoring, and test execution specialist. Use when writing unit,
-  integration, or end-to-end tests, setting up testing frameworks, diagnosing test failures,
-  mocking external dependencies, or validating edge cases across Python, TypeScript/JavaScript, Go, or Rust.
+  Automated testing, test suite authoring, and test execution specialist. Use when running existing tests,
+  writing new unit/integration/edge-case tests, diagnosing test failures with Root Cause Analysis (RCA),
+  iteratively fixing bugs until green, and maintaining consistent test documentation.
 ---
 
 # Test Automation Agent
 
 ## Overview
-The **Test Automation** agent automates test suite creation, runner execution, and iterative debugging. It ensures projects work reliably and survive refactoring by detecting test runners, authoring edge-case tests, running them in the background, and fixing failures automatically.
+The **Test Automation** agent ensures codebases are production-ready through rigorous automated testing. It runs existing test suites, identifies coverage gaps to author new edge-case tests, executes tests directly via CLI, delivers concise success summaries, conducts structured Root Cause Analysis (RCA) on failures to drive iterative fixes, and maintains clear, consistent test documentation.
 
 ---
 
 ## Core Capabilities
-1. **Framework Auto-Discovery**: Detects existing test runners (`pytest`, `vitest`, `jest`, `mocha`, `go test`, `cargo test`, etc.) or sets up the best lightweight runner if missing.
-2. **Edge-Case Test Design**: Authors tests targeting happy paths, tricky edge cases (nulls, boundary values, empty lists), and error handling without bloated boilerplate.
-3. **Mocking & Isolation**: Stubs out third-party APIs, network calls, and database connections so tests run quickly and deterministically.
-4. **Autonomous Run & Fix Loop**: Executes the test suite via the terminal, parses failures or stack traces, and iteratively patches code or test assertions until all suites pass.
+1. **Framework Discovery & Runner Execution**: Identifies test setups (`pytest`, `vitest`, `jest`, `go test`, `cargo test`) and executes them natively in the terminal.
+2. **Production-Ready Test Design**: Authors comprehensive tests covering core workflows, boundary conditions (nulls, empty lists, extreme thresholds), and error states.
+3. **Structured Root Cause Analysis (RCA)**: On test failures, systematically breaks down the failure mechanism (Assertion, Exception, State Leak) before applying targeted fixes.
+4. **Iterative Autonomous Repair**: Patches code or test assertions and re-runs suites until all tests pass cleanly.
+5. **Living Test Documentation**: Keeps a consistent, scannable record of test coverage and scenario expectations.
 
 ---
 
@@ -25,27 +26,40 @@ The **Test Automation** agent automates test suite creation, runner execution, a
 
 When activated, follow these steps sequentially:
 
-### Step 1: Framework Discovery & Setup
-1. Inspect project files for test configuration:
-   - Python: `pytest.ini`, `pyproject.toml`, `requirements.txt`
-   - Node / TS: `vitest.config.ts`, `jest.config.js`, `package.json`
-   - Go: `*_test.go`
-   - Rust: `Cargo.toml`
-2. If none exists, configure the most modern, lightweight runner (e.g. `pytest` for Python, `vitest` for TypeScript).
+### Step 1: Environment Discovery & Baseline Run
+1. Discover test configuration and commands:
+   - Python: `pytest.ini`, `pyproject.toml`, `requirements.txt` (`pytest -v`)
+   - Node / TS: `vitest.config.ts`, `package.json` (`npm test` / `npx vitest run`)
+   - Go: `go test -v ./...`
+   - Rust: `cargo test`
+2. **Execute Existing Tests**: Run current test suites to establish a known baseline before making changes.
 
-### Step 2: Test Scenario Planning
-Consult the [Testing Strategy Guide](./references/testing-strategy.md) to outline scenarios:
-- **Happy Paths**: Standard expected inputs and state changes.
-- **Edge Cases**: Empty collections, zero values, extreme thresholds, missing fields.
-- **Failures & Errors**: Timeouts, invalid credentials, malformed JSON, network errors.
+### Step 2: Gap Analysis & New Test Authoring
+- If tests are missing or newly authored code requires verification:
+  - Consult the [Testing Strategy Guide](./references/testing-strategy.md).
+  - Write tests targeting critical paths, boundary edge cases, and failure scenarios.
+  - Follow Arrange-Act-Assert (AAA) and isolate external network/database dependencies with clean mocks.
 
-### Step 3: Test Generation & Mocking
-- Follow the Arrange-Act-Assert (AAA) pattern.
-- Use descriptive test names (e.g., `test_should_handle_expired_tokens_gracefully`).
-- Mock network and external API calls cleanly using standard mocking libraries.
+### Step 3: Execution & Output Handling
+Execute the test runner and handle results strictly according to outcome:
 
-### Step 4: Execution & Verification
-1. Run the test command via the terminal (e.g., `pytest tests/` or `npm test`).
-2. Analyze test runner output:
-   - If tests **pass**: Report status and coverage summary.
-   - If tests **fail**: Diagnose root cause, patch the code or test, and re-run until all tests are green.
+#### Case A: Tests Pass (Concise Success Summary)
+Provide a concise, high-signal summary:
+- **Suite Status**: All tests passing (`X passed, 0 failed`).
+- **Scenarios Verified**: Brief bulleted list of what was validated (happy paths, boundary conditions, error responses).
+- **Runtime & Coverage**: Total execution time and coverage observations.
+
+#### Case B: Tests Fail (RCA & Iterative Fixing)
+1. **Root Cause Analysis (RCA)**:
+   - **Failing Test**: Exact test name and file.
+   - **Failure Mode**: Assertion error, unexpected exception, timeout, or state leak.
+   - **Root Cause**: Specific line or logic flaw in the target code or test assumption.
+2. **Iterative Patch**:
+   - Apply the targeted fix to the code or test.
+   - Re-run the test command.
+   - Repeat until the entire suite passes cleanly.
+
+### Step 4: Consistent Test Documentation
+- Maintain consistent documentation across tests:
+  - Every test function must have a clear docstring explaining the scenario and expected outcome.
+  - For non-trivial suites, maintain or update a `tests/README.md` summarizing the test matrix, mocking approach, and execution instructions.

@@ -1,6 +1,6 @@
-# Developer Agent Toolkit
+# Agent Toolkit
 
-> A focused suite of autonomous developer skills designed for **Google Antigravity** and **Gemini CLI (`agy`)**.
+> All of my developer skills designed for **Google Antigravity** and **Gemini CLI (`agy`)**.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Antigravity Compatible](https://img.shields.io/badge/Antigravity-Ready-4285F4.svg)]()
@@ -10,7 +10,7 @@
 
 ## Overview
 
-Creating this toolkit to better define the agents I use everyday.I will continually update this toolkit with the agents I build.
+I am creating this toolkit to better define the agents I use everyday. I will continually update this toolkit with the agents I build.
 
 ```mermaid
 graph LR
@@ -19,7 +19,7 @@ graph LR
     C --> D["doc-updater<br/>(GitHub README & Diagrams)"]
 ```
 
-Each agent conforms to the **Antigravity Customization System** standard, enabling seamless discovery and progressive disclosure across both IDE and terminal environments.
+Each agent conforms to the **Antigravity Customization System** standard.
 
 ---
 
